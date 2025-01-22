@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "Y7lSinkJIL8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mathe\\OneDrive\\Documents\\Cursos_ALURA\\PrimeiroTesteRabbitMQ\\MiniAplicacaoRabbitMQ\\Publisher\\Publisher\\Publisher.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mathe\\.nuget\\packages\\rabbitmq.client\\6.2.1\\rabbitmq.client.6.2.1.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}
