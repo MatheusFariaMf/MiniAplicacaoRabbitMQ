@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Text.Json;
 
 Console.WriteLine("Hello, World!");
 
@@ -12,27 +13,41 @@ var factory = new ConnectionFactory()
     HostName = "localhost"
 };
 
-using (var connection = factory.CreateConnection())
-    using (var channel = connection.CreateModel())
-    {
-        channel.QueueDeclare(queue: "saudacao_1",
-                         durable: false,
-                         exclusive: false,
-                         autoDelete: false,
-                         arguments: null);
+using var connection = factory.CreateConnection();
 
-        var consumer = new EventingBasicConsumer(channel);
+using var channel = connection.CreateModel();
 
-        Console.WriteLine($" antes 1  111");
-        consumer.Received += (model, ea) =>
-        {
-            Console.WriteLine($" antes");
-            var body = ea.Body.ToArray();
-            var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine($" [X] Recebida: {message}");
-        };
-        Console.WriteLine($" depois");
-        channel.BasicConsume(queue: "saudacao_1", autoAck: true, consumer: consumer);
+channel.QueueDeclare(queue: "saudacao_1",
+                    durable: false,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
 
-        Console.ReadLine();
-    }
+Console.WriteLine(" [*] Aguardando mensagens.");
+
+var consumer = new EventingBasicConsumer(channel);
+
+consumer.Received += (model, ea) =>
+{
+    var body = ea.Body.ToArray();
+    var message = Encoding.UTF8.GetString(body);
+
+    var aluno = JsonSerializer.Deserialize<Aluno>(message);
+
+    Console.WriteLine($" [X] Recebida: {message}");
+};
+
+channel.BasicConsume(queue: "saudacao_1",
+                     autoAck: true, 
+                     consumer: consumer);
+
+Console.WriteLine(" Aperte [enter] para sair.");
+Console.ReadLine();
+
+class Aluno
+{
+    public int Id { get; set; }
+    public string? Nome { get; set; }
+}
+
+
